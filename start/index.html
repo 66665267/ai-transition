@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>我的 AI 聊天助手</title>
+    <style>
+        /* 这里是一点点美化，不用管它 */
+        body { font-family: sans-serif; background: #f4f4f9; display: flex; justify-content: center; padding-top: 50px; }
+        .box { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 400px; }
+        input { width: 75%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        button { padding: 10px 15px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        #answer { margin-top: 20px; padding: 15px; background: #eef1f6; border-radius: 5px; min-height: 50px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+
+    <div class="box">
+        <h2 style="color: blue;">江流儿的私人超级 AI</h2>
+        
+        <!-- 输入框和按钮 -->
+        <input type="text" id="question" placeholder="请输入你的问题...">
+        <button onclick="askAI()">发送</button>
+        
+        <!-- 显示 AI 回答的地方 -->
+        <div id="answer">AI 的回答会显示在这里...</div>
+    </div>
+
+    <script>
+        // 这是一个前端脚本，负责把数据发给后端
+        async function askAI() {
+            const input = document.getElementById("question").value;
+            const answerBox = document.getElementById("answer");
+            
+            if (!input) { return alert("请先输入问题！"); }
+            
+            answerBox.innerText = "AI 正在思考中，请稍候...";
+            
+            // 向后端发送 POST 请求（就像刚才 Python 里敲的一样）
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question: input })
+            });
+            
+            const data = await response.json();
+            // 把后端返回的答案显示出来
+            answerBox.innerText = data.answer;
+        }
+    </script>
+
+</body>
+</html>
